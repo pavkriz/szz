@@ -12,7 +12,23 @@ angular.module('cz.uhk.szz.results').controller('ResultCalculatorCtrl', function
     2.5: 'D',   
     3.0: 'E',   
     4.0: 'F'   
-  }                      
+  }
+  
+  self.getPrimaryGrade = function(num) {
+    if (self.numericButtons) {
+      return num;
+    } else {
+      return self.gradeNum2Alpha[num];
+    }
+  };
+
+ self.getSecondaryGrade = function(num) {
+    if (self.numericButtons) {
+      return self.gradeNum2Alpha[num];
+    } else {
+      return num;
+    }
+  };  
 
   self.addGrade = function() {
     self.grades.push({num:0});
@@ -75,13 +91,13 @@ angular.module('cz.uhk.szz.results').controller('ResultCalculatorCtrl', function
     } else if (avg <= 1.5 && defence <= 1.5 && worst <= 2) { 
       // b) „B“, jestliže ze všech částí státní závěrečné zkoušky je aritmetický průměr do 1,5 včetně a diplomová nebo bakalářská práce je hodnocena stupněm „A“ nebo „B“, a žádná další část státní závěrečné zkoušky nebyla hodnocena nižším stupněm než „C“,
       return 1.5;    
-    } else if (avg <= 2 && defence <= 2) { 
+    } else if (avg <= 2 && defence <= 2 && worst < 4) { 
       // c) „C“, jestliže ze všech částí státní závěrečné zkoušky je aritmetický průměr do 2,0 včetně a diplomová nebo bakalářská práce je hodnocena stupněm „A“ nebo „B“ nebo „C“,
       return 2; 
-    } else if (avg <= 2.5 && defence <= 2.5) { 
+    } else if (avg <= 2.5 && defence <= 2.5 && worst < 4) { 
       // d) „D“, jestliže ze všech částí státní závěrečné zkoušky je aritmetický průměr do 2,5 včetně a diplomová nebo bakalářská práce je hodnocena maximálně stupněm „D“,
       return 2.5; 
-    } else if (avg <= 3 && defence <= 3) { 
+    } else if (avg <= 3 && defence <= 3 && worst < 4) { 
       // e) „E“, jestliže ze všech částí státní závěrečné zkoušky je aritmetický průměr do 3,0 včetně a diplomová nebo bakalářská práce je hodnocena maximálně stupněm „E“,
       return 3;
     } else { 
@@ -95,6 +111,12 @@ angular.module('cz.uhk.szz.results').controller('ResultCalculatorCtrl', function
   if (!numberOfGrades) numberOfGrades = 3;  
   for (var i = 0; i < numberOfGrades; i++) {
     self.addGrade();
+  }
+  
+  self.numericButtons = ($cookies.get('numericButtons') === 'true');
+  
+  self.numericButtonsChanged = function() {
+    $cookies.put('numericButtons', self.numericButtons);
   }
     
 });

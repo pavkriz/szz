@@ -20,22 +20,27 @@
       Známek: {{self.grades.length}} 
       <button class="btn btn-sm btn-plusminus" ng-click="self.removeGrade()"><span class="glyphicon glyphicon-minus"></span></button>
       <button class="btn btn-sm btn-plusminus" ng-click="self.addGrade()"><span class="glyphicon glyphicon-plus"></span></button>
+      <span class="chck">
+        <label>
+          <input type="checkbox" ng-model="self.numericButtons" ng-change="self.numericButtonsChanged()"> A/1
+        </label>
+      </span>
     </div>
     <div class="r" ng-repeat="grade in self.grades track by $index">
       <div class="btn-group btn-group-justified" ng-class="{grpdefence: ($index == self.grades.length-1)}">
-        <label class="btn btn-grade" ng-model="grade.num" btn-radio="1.0">{{self.gradeNum2Alpha[1.0]}}</label>
-        <label class="btn btn-grade" ng-model="grade.num" btn-radio="1.5">{{self.gradeNum2Alpha[1.5]}}</label>
-        <label class="btn btn-grade" ng-model="grade.num" btn-radio="2.0">{{self.gradeNum2Alpha[2.0]}}</label>
-        <label class="btn btn-grade" ng-model="grade.num" btn-radio="2.5">{{self.gradeNum2Alpha[2.5]}}</label>
-        <label class="btn btn-grade" ng-model="grade.num" btn-radio="3.0">{{self.gradeNum2Alpha[3.0]}}</label>
-        <label class="btn btn-grade" ng-model="grade.num" btn-radio="4.0">{{self.gradeNum2Alpha[4.0]}}</label>
+        <label class="btn btn-grade" ng-model="grade.num" btn-radio="1.0">{{self.getPrimaryGrade(1.0)}}</label>
+        <label class="btn btn-grade" ng-model="grade.num" btn-radio="1.5">{{self.getPrimaryGrade(1.5)}}</label>
+        <label class="btn btn-grade" ng-model="grade.num" btn-radio="2.0">{{self.getPrimaryGrade(2.0)}}</label>
+        <label class="btn btn-grade" ng-model="grade.num" btn-radio="2.5">{{self.getPrimaryGrade(2.5)}}</label>
+        <label class="btn btn-grade" ng-model="grade.num" btn-radio="3.0">{{self.getPrimaryGrade(3.0)}}</label>
+        <label class="btn btn-grade" ng-model="grade.num" btn-radio="4.0">{{self.getPrimaryGrade(4.0)}}</label>
         <span class="btn-group-label">
+            <span ng-show="$index != self.grades.length-1">Př. {{$index+1}}</span>
+            <span ng-show="$index == self.grades.length-1">Obh.</span>
             <span class="badge">
-              <span ng-show="grade.num != 0">{{grade.num | number : 1}}</span>
+              <span ng-show="grade.num != 0">{{self.getSecondaryGrade(grade.num)}}</span>
               <span ng-show="grade.num == 0">?</span>
             </span>
-            <span ng-show="$index == self.grades.length-1">Obh.</span>
-            <span ng-show="$index != self.grades.length-1">Př. {{$index+1}}</span>
         </span>
       </div>
     </div>
@@ -51,13 +56,13 @@
         <div>
           Nejhorší: 
           <span class="badge">
-            <span ng-show="self.worst() != null">{{self.worst() | number : 1}}</span>
+            <span ng-show="self.worst() != null">{{self.worst() | number : 1}} {{self.gradeNum2Alpha[self.worst()]}}</span>
             <span ng-show="self.worst() == null">?</span>
           </span>
         </div>
       </div>
       <div class="pull-right final-grade">
-        Výsledná známka: 
+        Výsl. známka: 
         <span class="badge">
           <span ng-show="self.result() != null">{{self.result() | number : 1}} {{self.gradeNum2Alpha[self.result()]}}</span>
           <span ng-show="self.avg() == null">?</span>
@@ -67,7 +72,7 @@
     <hr>
     <div class="r">
       Dle zkuš. řádu UHK 1.&nbsp;9.&nbsp;2015 <br>
-      <a href="mailto:pavel.kriz@uhk.cz">Pavel Kříž</a>, verze 1.0 <a href="https://github.com/pavkriz/szz">GitHub</a>.
+      <a href="mailto:pavel.kriz@uhk.cz">Pavel Kříž</a>, verze 1.0.1 <a href="https://github.com/pavkriz/szz">GitHub</a>.
     </div>
   </div>    
 </body>
